@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.css">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.js"></script>
+        {{ form.media }}
+        <style>
+            body {
+                margin: 40px auto;
+                width: 90%;
+            }
+            form {
+                margin: 40px auto;
+                min-width: 200px;
+                max-width: 500px;
+            }
+        </style>
+    </head>
+    <body>
+        <form method="post" role="form">
+            {% for field in form.visible_fields %}
+            <div id="div_{{ field.html_name }}" class="form-group{% if field.errors %} has-error{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+                <div class="text-muted pull-right"><small>{{ field.help_text }}</small></div>
+                <div class="help-block">
+                    {{ field.errors }}
+                </div>
+            </div>
+            {% endfor %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            {% csrf_token %}
+            <div class="form-group">
+                <input name="confirm" type="submit" value="Validate" class="btn btn-primary" />
+            </div>
+        </form>
+    </body>
+</html>
