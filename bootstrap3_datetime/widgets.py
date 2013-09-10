@@ -4,7 +4,10 @@ from django.forms.widgets import DateTimeInput
 from django.utils import translation
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
-import json
+try:
+    import json
+except ImportError:
+    from django.utils import simplejson as json
 try:
     from django.utils.encoding import force_unicode as force_text
 except ImportError: #python3
@@ -15,12 +18,12 @@ class DateTimePicker(DateTimeInput):
     class Media:
         class _js_files(object):
             def __iter__(self):
-                yield 'datetimepicker/js/bootstrap-datetimepicker.min.js'
+                yield 'bootstrap3_datetime/js/bootstrap-datetimepicker.min.js'
                 lang = translation.get_language()
                 if lang and not lang.startswith('en'):
-                    yield 'datetimepicker/js/locales/bootstrap-datetimepicker.{0}.js'.format(lang)
+                    yield 'bootstrap3_datetime/js/locales/bootstrap-datetimepicker.%s.js' % (lang)
         js = _js_files()
-        css = {'all': ('datetimepicker/css/bootstrap-datetimepicker.min.css',),}
+        css = {'all': ('bootstrap3_datetime/css/bootstrap-datetimepicker.min.css',),}
     
     
     def __init__(self, attrs=None, format=None, options=None, div_attrs={'class': 'input-group date'}):
@@ -29,7 +32,7 @@ class DateTimePicker(DateTimeInput):
             self.attrs["class"] = "form-control"
         self.div_attrs = div_attrs and div_attrs.copy() or {}
         self.picker_id = self.div_attrs.get('id') or None
-        if options == False: # do not initalize datetimepicker
+        if options == False: # datetimepicker will not be initalized
             self.options = False
         else:
             self.options = options and options.copy() or {}
@@ -43,32 +46,30 @@ class DateTimePicker(DateTimeInput):
         if value != '':
             # Only add the 'value' attribute if a value is non-empty.
             input_attrs['value'] = force_text(self._format_value(value))
-        input_attrs = {key: conditional_escape(val) for key, val in input_attrs.items()}
+        input_attrs = dict([(key, conditional_escape(val)) for key, val in input_attrs.items()]) # python2.6 compatible
         if not self.picker_id:
             self.picker_id = input_attrs.get('id', '') + '_picker'
         self.div_attrs['id'] = self.picker_id
         picker_id = conditional_escape(self.picker_id)
-        div_attrs = {key: conditional_escape(val) for key, val in self.div_attrs.items()}
+        div_attrs = dict([(key, conditional_escape(val)) for key, val in self.div_attrs.items()]) # python2.6 compatible
         html = '''
-                <div{div_attrs}>
-                    <input{input_attrs} />
+                <div%(div_attrs)s>
+                    <input%(input_attrs)s/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
-                </div>'''.format(picker_id=picker_id,
-                                 div_attrs=flatatt(div_attrs),
+                </div>''' % dict(div_attrs=flatatt(div_attrs),
                                  input_attrs=flatatt(input_attrs))
         if self.options == False:
             js = ''
         else:
-            options = json.dumps(self.options or {})
             js = '''
                 <script>
-                    $(function() {{
-                        $('#{picker_id}').datetimepicker({options});
-                    }});
-                </script>'''.format(picker_id=picker_id, 
-                                    options=options)
+                    $(function() {
+                        $("#%(picker_id)s").datetimepicker(%(options)s);
+                    });
+                </script>''' % dict(picker_id=picker_id, 
+                                    options=json.dumps(self.options or {}))
         return mark_safe(force_text(html + js))
     
     

@@ -1,21 +1,25 @@
 django-bootstrap3-datetimepicker
 ================================
 
+Bootstrap3 compatible datetimepicker for Django projects. 
+
+The JavaScript datetimepicker library is provided by the following project:
 * https://github.com/Eonasdan/bootstrap-datetimepicker
-* http://tarruda.github.io/bootstrap-datetimepicker/
-* http://www.eyecon.ro/bootstrap-datepicker/
+
+It works only with Bootstrap3. If you are using Bootstrap2 in your Django project, 
+check out https://github.com/zokis/django-bootstrap-datetimepicker
 
 
-Setup
+Install
 -------------------------------
 
-- Add `'bootstrap3_datetime'` to your `INSTALLED_APPS`
-- Set proper value for `STATIC_ROOT` and `STATIC_URL`
-- Run `python manage.py collectstatic`
+* Run `pip install django-bootstrap3-datetimepicker`
 
+* Add `'bootstrap3_datetime'` to your `INSTALLED_APPS`.
+* Set proper value for `STATIC_ROOT` and `STATIC_URL`.
+* Run `python manage.py collectstatic`.
 
-To serve the static files on the local development server, 
-you might need to append the following code to urls.py
+* Append the following code to urls.py, in order to serve the static files on the local development server.
 
 	from django.conf.urls.static import static
 	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
@@ -33,12 +37,18 @@ Example
 			widget=forms.TextInput(attrs={"class": "form-control"}))
 		date = forms.DateField(
 			widget=DateTimePicker(options={"format": "yyyy-MM-dd",
-		                                   "pickTime": False}))
+	                                       "pickTime": False}))
 		reminder = forms.DateTimeField(
 			required=False,
 			widget=DateTimePicker(options={"format": "yyyy-MM-dd hh:mm",
-										   "pickSeconds": False}))
+	                                       "pickSeconds": False}))
 
+The 'options' will be passed to the JavaScript datetimepicker instance. 
+Available options are explained in the following documents:
+* http://tarruda.github.io/bootstrap-datetimepicker/
+* http://www.eyecon.ro/bootstrap-datepicker/
+You don't need to set the `language` option, 
+because it will be set the current language of the thread automatically.
 
 ###### template.html
 	<!DOCTYPE html>
@@ -72,5 +82,15 @@ Example
 	        </form>
 	    </body>
 	</html>
+
+Bootstrap3 and jQuery have to be included along with `form.media`.
+
+
+Requirements
+-------------------------------
+
+* Python >= 2.4
+* Django >= 1.3
+* Bootstrap >= 3.0
 
 

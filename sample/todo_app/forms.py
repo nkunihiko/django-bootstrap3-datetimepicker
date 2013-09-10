@@ -6,8 +6,8 @@ class ToDoForm(forms.Form):
 		widget=forms.TextInput(attrs={"class": "form-control"}))
 	date = forms.DateField(
 		widget=DateTimePicker(options={"format": "yyyy-MM-dd",
-	                                   "pickTime": False}))
+                                       "pickTime": False}))
 	reminder = forms.DateTimeField(
 		required=False,
 		widget=DateTimePicker(options={"format": "yyyy-MM-dd hh:mm",
-									   "pickSeconds": False}))
+                                       "pickSeconds": False}))
