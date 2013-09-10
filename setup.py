@@ -1,11 +1,13 @@
 from setuptools import setup
-import os
 
 
 def read_file(filename):
+    # pandoc --from=markdown --to=rst --output=README.rst README.md
     try:
-        filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), filename))
-        return open(filepath).read()
+        import os
+        path = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+        file_path = os.path.join(path, filename)
+        return open(file_path).read()
     except:
         return ''
 
@@ -25,9 +27,9 @@ CLASSIFIERS = [
 setup(
     name='django-bootstrap3-datetimepicker',
     packages=['bootstrap3_datetime',],
-    version='1.0.0',
+    version='1.0.1',
     description='Bootstrap3 compatible datetimepicker for Django projects.',
-    long_description=read_file("README.md"),
+    long_description=read_file('README.rst'),
     author='Nakahara Kunihiko',
     author_email='nakahara.kunihiko@gmail.com',
     url='https://github.com/nkunihiko/django-bootstrap3-datetimepicker',

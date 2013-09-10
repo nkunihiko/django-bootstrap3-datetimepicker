@@ -1,13 +1,12 @@
 django-bootstrap3-datetimepicker
 ================================
 
-Bootstrap3 compatible datetimepicker for Django projects. 
-
 The JavaScript datetimepicker library is provided by the following project:
-* https://github.com/Eonasdan/bootstrap-datetimepicker
+ https://github.com/Eonasdan/bootstrap-datetimepicker
 
 It works only with Bootstrap3. If you are using Bootstrap2 in your Django project, 
-check out https://github.com/zokis/django-bootstrap-datetimepicker
+check out this:
+ https://github.com/zokis/django-bootstrap-datetimepicker
 
 
 Install
@@ -15,14 +14,6 @@ Install
 
 * Run `pip install django-bootstrap3-datetimepicker`
 * Add `'bootstrap3_datetime'` to your `INSTALLED_APPS`
-* Set proper value for `STATIC_ROOT` and `STATIC_URL`
-* Run `python manage.py collectstatic`
-
-You might need to append the following code to urls.py
- in order to serve the static files on the local development server.
-
-	from django.conf.urls.static import static
-	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
 Example
@@ -45,6 +36,7 @@ Example
 
 The `options` will be passed to the JavaScript datetimepicker instance. 
 Available `options` are explained in the following documents:
+
 * http://tarruda.github.io/bootstrap-datetimepicker/
 * http://www.eyecon.ro/bootstrap-datepicker/
 
