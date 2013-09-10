@@ -1,18 +1,22 @@
 django-bootstrap3-datetimepicker
 ================================
 
-https://github.com/Eonasdan/bootstrap-datetimepicker
-http://tarruda.github.io/bootstrap-datetimepicker/
-http://www.eyecon.ro/bootstrap-datepicker/
+* https://github.com/Eonasdan/bootstrap-datetimepicker
+* http://tarruda.github.io/bootstrap-datetimepicker/
+* http://www.eyecon.ro/bootstrap-datepicker/
 
 
 Setup
 -------------------------------
 
-- Add 'bootstrap3_datetime' to your `INSTALLED_APPS`
+- Add `'bootstrap3_datetime'` to your `INSTALLED_APPS`
 - Set proper value for `STATIC_ROOT` and `STATIC_URL`
 - Run `python manage.py collectstatic`
-- 
+
+
+To serve the static files on the local development server, 
+you might need to append the following code to urls.py
+
 	from django.conf.urls.static import static
 	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
