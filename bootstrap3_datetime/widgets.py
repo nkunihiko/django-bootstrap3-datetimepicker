@@ -25,11 +25,36 @@ class DateTimePicker(DateTimeInput):
         js = _js_files()
         css = {'all': ('bootstrap3_datetime/css/bootstrap-datetimepicker.min.css',),}
     
+    format_map = (('dd', r'%d'),
+                  ('MM', r'%m'),
+                  ('yyyy', r'%Y'),
+                  ('yy', r'%y'),
+                  ('ms', r'%f'), #NOTE: ms: milliseconds, %f: microseconds
+                  ('hh', r'%H'),
+                  ('mm', r'%M'),
+                  ('ss', r'%S'),
+                  ('HH', r'%I'),
+                  ('PP', r'%p'),
+                  )
+    
+    @classmethod
+    def conv_datetime_format_py2js(cls, format):
+        for js, py in cls.format_map:
+            format = format.replace(py, js)
+        return format
+    
+    @classmethod
+    def conv_datetime_format_js2py(cls, format):
+        for js, py in cls.format_map:
+            format = format.replace(js, py)
+        return format
     
     def __init__(self, attrs=None, format=None, options=None, div_attrs={'class': 'input-group date'}):
+        if format is None and options and options.get('format'):
+            format = self.conv_datetime_format_js2py(options.get('format'))
         super(DateTimePicker, self).__init__(attrs, format)
-        if "class" not in self.attrs:
-            self.attrs["class"] = "form-control"
+        if 'class' not in self.attrs:
+            self.attrs['class'] = 'form-control'
         self.div_attrs = div_attrs and div_attrs.copy() or {}
         self.picker_id = self.div_attrs.get('id') or None
         if options == False: # datetimepicker will not be initalized
@@ -37,7 +62,8 @@ class DateTimePicker(DateTimeInput):
         else:
             self.options = options and options.copy() or {}
             self.options['language'] = translation.get_language()
-        
+            if format and not self.options.get('format'):
+                self.options['format'] = self.conv_datetime_format_py2js(format)
     
     def render(self, name, value, attrs=None):
         if value is None:

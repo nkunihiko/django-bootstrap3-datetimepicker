@@ -21,10 +21,13 @@
     <body>
         <form method="post" role="form">
             {% for field in form.visible_fields %}
-            <div id="div_{{ field.html_name }}" class="form-group{% if field.errors %} has-error{% endif %}">
+            <div id="div_{{ field.html_name }}" 
+                 class="form-group{% if field.errors %} has-error{% endif %}">
                 {{ field.label_tag }}
                 {{ field }}
-                <div class="text-muted pull-right"><small>{{ field.help_text }}</small></div>
+                <div class="text-muted pull-right">
+                    <small>{{ field.help_text }}</small>
+                </div>
                 <div class="help-block">
                     {{ field.errors }}
                 </div>
@@ -35,7 +38,7 @@
             {% endfor %}
             {% csrf_token %}
             <div class="form-group">
-                <input name="confirm" type="submit" value="Validate" class="btn btn-primary" />
+                <input type="submit" value="Validate" class="btn btn-primary" />
             </div>
         </form>
     </body>

@@ -1,8 +1,8 @@
 django-bootstrap3-datetimepicker
 ================================
 
-The JavaScript datetimepicker library is provided by the following
-project: https://github.com/Eonasdan/bootstrap-datetimepicker
+This package uses bootstrap-datetimepicker.js provided by the following project:
+ https://github.com/Eonasdan/bootstrap-datetimepicker
 
 It works only with Bootstrap3. If you are using Bootstrap2 in your
 Django project, check out this:
@@ -51,37 +51,44 @@ template.html
 
 ::
 
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.css">
-            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.css">
-            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
-            <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.js"></script>
-            {{ form.media }}
-        </head>
-        <body>
-            <form method="post" role="form">
-                {% for field in form.visible_fields %}
-                <div id="div_{{ field.html_name }}" class="form-group{% if field.errors %} has-error{% endif %}">
-                    {{ field.label_tag }}
-                    {{ field }}
-                    <div class="text-muted pull-right"><small>{{ field.help_text }}</small></div>
-                    <div class="help-block">
-                        {{ field.errors }}
-                    </div>
-                </div>
-                {% endfor %}
-                {% for hidden in form.hidden_fields %}
-                    {{ hidden }}
-                {% endfor %}
-                {% csrf_token %}
-                <div class="form-group">
-                    <input name="confirm" type="submit" value="Submit" class="btn btn-primary" />
-                </div>
-            </form>
-        </body>
-    </html>
+	<!DOCTYPE html>
+	<html>
+	    <head>
+	        <link rel="stylesheet" 
+	              href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.css">
+	        <link rel="stylesheet" 
+	              href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.css">
+	        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js">
+	        </script>
+	        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.js">
+	        </script>
+	        {{ form.media }}
+	    </head>
+	    <body>
+	        <form method="post" role="form">
+	            {% for field in form.visible_fields %}
+	            <div id="div_{{ field.html_name }}" 
+	                 class="form-group{% if field.errors %} has-error{% endif %}">
+	                {{ field.label_tag }}
+	                {{ field }}
+	                <div class="text-muted pull-right">
+	                    <small>{{ field.help_text }}</small>
+	                </div>
+	                <div class="help-block">
+	                    {{ field.errors }}
+	                </div>
+	            </div>
+	            {% endfor %}
+	            {% for hidden in form.hidden_fields %}
+	                {{ hidden }}
+	            {% endfor %}
+	            {% csrf_token %}
+	            <div class="form-group">
+	                <input type="submit" value="Submit" class="btn btn-primary" />
+	            </div>
+	        </form>
+	    </body>
+	</html>
 
 Bootstrap3 and jQuery have to be included along with
 ``{{ form.media }}``
