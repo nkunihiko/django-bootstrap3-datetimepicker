@@ -36,3 +36,8 @@ nosetests.xml
 .DS_Store
 .settings/
 __pycache__/
+
+# Intellij
+.idea/
+*.iml
+*.iws
