@@ -30,18 +30,19 @@ class DateTimePicker(DateTimeInput):
     
     # http://momentjs.com/docs/#/parsing/string-format/
     # http://docs.python.org/2/library/datetime.html#strftime-strptime-behavior
-    format_map = (('DD', r'%d'),
-                  #('dd', r'%d'),
+    format_map = (('DDD', r'%j'),
+                  ('DD', r'%d'),
+                  ('MMMM', r'%B'),
+                  ('MMM', r'%b'),
                   ('MM', r'%m'),
                   ('YYYY', r'%Y'),
-                  #('yyyy', r'%Y'),
-                  ('yy', r'%y'),
-                  ('SSS', r'%f'),
-                  ('hh', r'%H'),
+                  ('YY', r'%y'),
+                  ('HH', r'%H'),
+                  ('hh', r'%I'),
                   ('mm', r'%M'),
                   ('ss', r'%S'),
-                  ('HH', r'%I'),
-                  ('PP', r'%p'),
+                  ('a', r'%p'),
+                  ('ZZ', r'%z'),
     )
 
     @classmethod
@@ -74,8 +75,8 @@ class DateTimePicker(DateTimeInput):
         else:
             self.options = options and options.copy() or {}
             self.options['language'] = translation.get_language()
-            if format and not self.options.get('format'):
-                self.attrs['date-format'] = self.conv_datetime_format_py2js(format)
+            if format and not self.options.get('format') and not self.attrs.get('date-format'):
+                self.options['format'] = self.conv_datetime_format_py2js(format)
 
     def render(self, name, value, attrs=None):
         if value is None:
