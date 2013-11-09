@@ -95,6 +95,14 @@ template.html
 Bootstrap3 and jQuery have to be included along with
 ``{{ form.media }}``
 
+Release Notes
+-------------
+
+v2.0.0
+
+- Includes bootstrap-datetimepicker.js version 2.1.11 with moment.js
+- The format strings have changed due to using moment.js
+
 Requirements
 ------------
 
