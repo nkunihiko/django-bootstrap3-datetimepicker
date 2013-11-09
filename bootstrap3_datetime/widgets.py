@@ -19,7 +19,7 @@ class DateTimePicker(DateTimeInput):
     class Media:
         class JsFiles(object):
             def __iter__(self):
-                yield 'bootstrap3_datetime/js/moment-with-langs.min.js'
+                yield 'bootstrap3_datetime/js/moment.min.js'
                 yield 'bootstrap3_datetime/js/bootstrap-datetimepicker.min.js'
                 lang = translation.get_language()
                 if lang and not lang.startswith('en'):
@@ -27,12 +27,16 @@ class DateTimePicker(DateTimeInput):
 
         js = JsFiles()
         css = {'all': ('bootstrap3_datetime/css/bootstrap-datetimepicker.min.css',), }
-
-    format_map = (('dd', r'%d'),
+    
+    # http://momentjs.com/docs/#/parsing/string-format/
+    # http://docs.python.org/2/library/datetime.html#strftime-strptime-behavior
+    format_map = (('DD', r'%d'),
+                  #('dd', r'%d'),
                   ('MM', r'%m'),
-                  ('yyyy', r'%Y'),
+                  ('YYYY', r'%Y'),
+                  #('yyyy', r'%Y'),
                   ('yy', r'%y'),
-                  ('ms', r'%f'), # NOTE: ms: milliseconds, %f: microseconds
+                  ('SSS', r'%f'),
                   ('hh', r'%H'),
                   ('mm', r'%M'),
                   ('ss', r'%S'),
