@@ -56,6 +56,21 @@ class DateTimePicker(DateTimeInput):
         for js, py in cls.format_map:
             format = format.replace(js, py)
         return format
+    
+    html_template = '''
+        <div%(div_attrs)s>
+            <input%(input_attrs)s/>
+            <span class="input-group-addon">
+                <span%(icon_attrs)s></span>
+            </span>
+        </div>'''
+    
+    js_template = '''
+        <script>
+            $(function() {
+                $("#%(picker_id)s").datetimepicker(%(options)s);
+            });
+        </script>'''
 
     def __init__(self, attrs=None, format=None, options=None, div_attrs=None, icon_attrs=None):
         if not icon_attrs:
@@ -70,7 +85,7 @@ class DateTimePicker(DateTimeInput):
         self.div_attrs = div_attrs and div_attrs.copy() or {}
         self.icon_attrs = icon_attrs and icon_attrs.copy() or {}
         self.picker_id = self.div_attrs.get('id') or None
-        if not options:  # datetimepicker will not be initalized
+        if options == False:  # datetimepicker will not be initalized only when options is False
             self.options = False
         else:
             self.options = options and options.copy() or {}
@@ -93,23 +108,12 @@ class DateTimePicker(DateTimeInput):
         div_attrs = dict(
             [(key, conditional_escape(val)) for key, val in self.div_attrs.items()])  # python2.6 compatible
         icon_attrs = dict([(key, conditional_escape(val)) for key, val in self.icon_attrs.items()])
-        html = '''
-                <div%(div_attrs)s>
-                    <input%(input_attrs)s/>
-                    <span class="input-group-addon">
-                        <span%(icon_attrs)s></span>
-                    </span>
-                </div>''' % dict(div_attrs=flatatt(div_attrs),
-                                 input_attrs=flatatt(input_attrs),
-                                 icon_attrs=flatatt(icon_attrs))
+        html = self.html_template % dict(div_attrs=flatatt(div_attrs),
+                                         input_attrs=flatatt(input_attrs),
+                                         icon_attrs=flatatt(icon_attrs))
         if not self.options:
             js = ''
         else:
-            js = '''
-                <script>
-                    $(function() {
-                        $("#%(picker_id)s").datetimepicker(%(options)s);
-                    });
-                </script>''' % dict(picker_id=picker_id,
-                                    options=json.dumps(self.options or {}))
+            js = self.js_template % dict(picker_id=picker_id,
+                                         options=json.dumps(self.options or {}))
         return mark_safe(force_text(html + js))
