@@ -22,7 +22,16 @@ class DateTimePicker(DateTimeInput):
                 yield 'bootstrap3_datetime/js/moment.min.js'
                 yield 'bootstrap3_datetime/js/bootstrap-datetimepicker.min.js'
                 lang = translation.get_language()
-                if lang and not lang.startswith('en'):
+                if lang.startswith('zh') and lang not in ('zh-cn', 'zh-tw',):
+                    if lang == 'zh-hk':
+                        lang = 'zh-tw'
+                    else:
+                        lang = 'zh-cn'
+                elif len(lang) > 2 and lang not in ('ar-ma', 'en-au', 'en-ca', 'en-gb', 
+                                                    'fa-ir', 'fr-ca', 'ms-my', 'pt-br', 
+                                                    'rs-latin', 'tzm-la', ):
+                    lang = lang[:2]
+                if lang != 'en':
                     yield 'bootstrap3_datetime/js/locales/bootstrap-datetimepicker.%s.js' % (lang.lower())
 
         js = JsFiles()
