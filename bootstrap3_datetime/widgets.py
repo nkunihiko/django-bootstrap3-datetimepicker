@@ -24,21 +24,32 @@ class DateTimePicker(DateTimeInput):
                 lang = translation.get_language()
                 if lang:
                     lang = lang.lower()
-                    if lang.startswith('zh') and lang not in ('zh-cn', 'zh-tw',):
-                        if lang == 'zh-hk':
-                            lang = 'zh-tw'
-                        else:
-                            lang = 'zh-cn'
-                    elif len(lang) > 2 and lang not in ('ar-ma', 'en-au', 'en-ca', 'en-gb', 
-                                                        'fa-ir', 'fr-ca', 'ms-my', 'pt-br', 
-                                                        'rs-latin', 'tzm-la', ):
-                        lang = lang[:2]
-                    if lang != 'en':
+                    #There is language name that length>2 *or* contains uppercase.
+                    lang_map = {
+                        'ar-ma': 'ar-ma',
+                        'en-au': 'en-au',
+                        'en-ca': 'en-ca',
+                        'en-gb': 'en-gb',
+                        'en-us': 'en-us',
+                        'fa-ir': 'fa-ir',
+                        'fr-ca': 'fr-ca',
+                        'ms-my': 'ms-my',
+                        'pt-br': 'bt-BR',
+                        'rs-latin': 'rs-latin',
+                        'tzm-la': 'tzm-la',
+                        'tzm': 'tzm',
+                        'zh-cn': 'zh-CN',
+                        'zh-tw': 'zh-TW',
+                        'zh-hk': 'zh-TW',
+                    }
+                    if len(lang) > 2:
+                        lang = lang_map.get(lang, 'en-us')
+                    if lang not in ('en', 'en-us'):
                         yield 'bootstrap3_datetime/js/locales/bootstrap-datetimepicker.%s.js' % (lang)
 
         js = JsFiles()
         css = {'all': ('bootstrap3_datetime/css/bootstrap-datetimepicker.min.css',), }
-    
+
     # http://momentjs.com/docs/#/parsing/string-format/
     # http://docs.python.org/2/library/datetime.html#strftime-strptime-behavior
     format_map = (('DDD', r'%j'),
@@ -67,7 +78,7 @@ class DateTimePicker(DateTimeInput):
         for js, py in cls.format_map:
             format = format.replace(js, py)
         return format
-    
+
     html_template = '''
         <div%(div_attrs)s>
             <input%(input_attrs)s/>
@@ -75,7 +86,7 @@ class DateTimePicker(DateTimeInput):
                 <span%(icon_attrs)s></span>
             </span>
         </div>'''
-    
+
     js_template = '''
         <script>
             $(function() {
@@ -128,3 +139,4 @@ class DateTimePicker(DateTimeInput):
             js = self.js_template % dict(picker_id=picker_id,
                                          options=json.dumps(self.options or {}))
         return mark_safe(force_text(html + js))
+
