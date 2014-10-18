@@ -91,7 +91,7 @@ class DateTimePicker(DateTimeInput):
         <script>
             (function(window) {
                 var callback = function() {
-                    $(function(){$("#%(picker_id)s").datetimepicker(%(options)s);});
+                    $(function(){$("#%(picker_id)s:has(input:not([readonly],[disabled]))").datetimepicker(%(options)s);});
                 };
                 if(window.addEventListener)
                     window.addEventListener("load", callback, false);
