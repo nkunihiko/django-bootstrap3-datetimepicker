@@ -131,7 +131,8 @@ class DateTimePicker(DateTimeInput):
             input_attrs['value'] = force_text(self._format_value(value))
         input_attrs = dict([(key, conditional_escape(val)) for key, val in input_attrs.items()])  # python2.6 compatible
         if not self.picker_id:
-            self.picker_id = input_attrs.get('id', '') + '_picker'
+             self.picker_id = (input_attrs.get('id', '') +
+                               '_pickers').replace(' ', '_')
         self.div_attrs['id'] = self.picker_id
         picker_id = conditional_escape(self.picker_id)
         div_attrs = dict(
