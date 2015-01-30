@@ -118,7 +118,6 @@ class DateTimePicker(DateTimeInput):
             self.options = False
         else:
             self.options = options and options.copy() or {}
-            self.options['language'] = translation.get_language()
             if format and not self.options.get('format') and not self.attrs.get('date-format'):
                 self.options['format'] = self.conv_datetime_format_py2js(format)
 
@@ -140,10 +139,10 @@ class DateTimePicker(DateTimeInput):
         html = self.html_template % dict(div_attrs=flatatt(div_attrs),
                                          input_attrs=flatatt(input_attrs),
                                          icon_attrs=flatatt(icon_attrs))
-        if not self.options:
-            js = ''
-        else:
+        if self.options:
+            self.options['language'] = translation.get_language()
             js = self.js_template % dict(picker_id=picker_id,
                                          options=json.dumps(self.options or {}))
+        else:
+            js = ''
         return mark_safe(force_text(html + js))
-
